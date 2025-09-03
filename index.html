@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Correct Box Loading Animation</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ffffff;
+  }
+
+  .loading-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Черный эллипс ("яма") */
+  .ellipse-pit {
+    width: 44px;
+    height: 22px;
+    background-color: #000000;
+    border-radius: 50%;
+    position: absolute;
+    /* Позиционируем эллипс чуть ниже центра */
+    top: 55%; 
+    z-index: 1; /* Эллипс находится под квадратом */
+  }
+  
+  /* Розовый квадрат */
+  .levitating-box {
+    width: 32px;
+    height: 32px;
+    background-color: #E21D80;
+    position: absolute;
+    z-index: 2; /* Квадрат находится над эллипсом */
+    
+    /* Применяем ОДНУ комбинированную анимацию */
+    animation: levitate-and-rotate 1.8s infinite;
+  }
+  
+
+  /* 
+    Ключевые кадры, которые ОДНОВРЕМЕННО управляют
+    и движением вверх-вниз (translateY), и вращением (rotate).
+  */
+  @keyframes levitate-and-rotate {
+    0% {
+      /* 
+        Начальное положение: ВЕРХНЯЯ точка, без поворота.
+        transform двигает и поворачивает элемент.
+      */
+      transform: translateY(-30px) rotate(0deg);
+      /* Начинаем падать с ускорением */
+      animation-timing-function: ease-in; 
+    }
+    50% {
+      /* 
+        Нижнее положение: квадрат опускается "в" эллипс 
+        и поворачивается на 180 градусов.
+      */
+      transform: translateY(12px) rotate(180deg);
+      /* Начинаем подниматься, замедляясь к верхней точке */
+      animation-timing-function: ease-out;
+    }
+    100% {
+      /* 
+        Возвращаемся в верхнюю точку, завершив полный оборот 
+        на 360 градусов.
+      */
+      transform: translateY(-30px) rotate(360deg);
+    }
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="loading-container">
+    <div class="ellipse-pit"></div>
+    <div class="levitating-box"></div>
+  </div>
+
+</body>
+</html>
